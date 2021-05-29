@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Favourite Receipes
-  description: 'The openapi describing each endpoint from favourite receipes APIs.'
+  description: 'The openapi describing each endpoint from favourite recipes APIs.'
   contact:
     email: andremadureira1993@gmail.com
   version: v3
@@ -10,23 +10,23 @@ servers:
     description: Localhost environment.
 
 paths:
-  /login:
+  /signin:
     get:
       tags:
         - Login
       summary: Login into the application
-      security:
-        - basicAuth: []
       responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         
 
 components:
-  securitySchemes:
-    basicAuth:
-      type: http
-      scheme: basic
   responses:
     UnauthorizedError:
       description: Authentication information is missing or invalid
@@ -34,5 +34,3 @@ components:
         Authenticate:
           schema:
             type: string
-security:
-  - basicAuth: []
