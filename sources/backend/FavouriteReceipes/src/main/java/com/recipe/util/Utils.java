@@ -1,11 +1,14 @@
 package com.recipe.util;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 
-public class PasswordEncoder {
-    public static void main(String[] args) {
+@Component
+public class Utils {
+
+    public String encodePassword(String password) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        System.out.println(passwordEncoder.encode("admin"));
+        return passwordEncoder.encode(password);
     }
 }
