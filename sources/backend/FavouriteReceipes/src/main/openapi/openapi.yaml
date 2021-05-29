@@ -24,9 +24,45 @@ paths:
                 type: string
         '401':
           $ref: '#/components/responses/UnauthorizedError'
-        
+  /signup:
+    post:
+      tags:
+        - SignUp
+      summary: Sign-up a user into the application
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
 
 components:
+  schemas:
+    SignUpRequest:
+      type: object
+      description: Json object received in Sign-up requests
+      required:
+        - username
+        - password
+      properties:
+        username:
+          description: Username that will be used in the login
+          type: string
+          example: usernameabc
+        password:
+          description: Password that will be used in the login
+          type: string
+          example: abc123
   responses:
     UnauthorizedError:
       description: Authentication information is missing or invalid
