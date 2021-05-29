@@ -5,20 +5,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
-import com.recipe.openapi.LoginApi;
+import com.recipe.openapi.SigninApi;
 
 /**
  * A controller for login
  */
 @Controller
-public class LoginController implements LoginApi {
+public class SigninController implements SigninApi {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SigninController.class);
 
     @Override
-    public ResponseEntity<Void> loginGet() {
+    public ResponseEntity<String> signinGet() {
         LOGGER.info("User login");
-
         return null;
     }
 }
