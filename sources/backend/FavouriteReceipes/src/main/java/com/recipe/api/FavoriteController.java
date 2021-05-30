@@ -35,4 +35,13 @@ public class FavoriteController implements FavoritesApi {
 
         return ResponseEntity.ok(favoriteService.getTotalOfEachFavoriteRecipe());
     }
+
+    @Override
+    public ResponseEntity<Void> favoritesDishIdDelete(String dishId) {
+        LOGGER.info("Processing remove favorite request");
+
+        favoriteService.deleteFavorite(dishId);
+
+        return ResponseEntity.ok(null);
+    }
 }
