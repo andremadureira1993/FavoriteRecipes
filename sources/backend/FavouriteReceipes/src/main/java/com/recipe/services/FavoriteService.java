@@ -68,6 +68,8 @@ public class FavoriteService {
 
         favoriteRepository.save(favorite);
 
+        increaseTheQuantityOfSuitablePersonsByRecipe(recipeData);
+
         LOGGER.info("Successfully create relation for username: " + username + " and recipeId: " + recipeId);
     }
 
@@ -99,9 +101,9 @@ public class FavoriteService {
     private List<FavoritesResponse> parseResponseFavoritesTotal(Map<String, Integer> totals) {
         List<FavoritesResponse> favoritesTotal = new ArrayList<>();
 
-        totals.forEach((key, total) -> {
+        totals.forEach((dish, total) -> {
             FavoritesResponse favorite = new FavoritesResponse();
-            favorite.setDish(key);
+            favorite.setDish(dish);
             favorite.setTotalPersonSuitable(total);
             favoritesTotal.add(favorite);
         });
@@ -120,6 +122,8 @@ public class FavoriteService {
             .orElseThrow(() -> new RuntimeException("Relation was not found in database for username: " + username + " and recipeId: " + recipeId));
 
         favoriteRepository.delete(favorite);
+
+        decreaseTheQuantityOfSuitablePersonsByRecipe(favorite.getDish());
 
         LOGGER.info("Successfully removed relation for username: " + username + " and recipeId: " + recipeId);
     }
@@ -162,5 +166,31 @@ public class FavoriteService {
         LOGGER.info("Successfully created user favorites response: " + response.toString());
 
         return response;
+    }
+
+    private void increaseTheQuantityOfSuitablePersonsByRecipe(RecipeData recipeData) {
+        if (recipeData.getQuantityOfPersonsSuitable() == null) {
+            recipeData.setQuantityOfPersonsSuitable(1);
+        } else {
+            Integer quantity = recipeData.getQuantityOfPersonsSuitable()  + 1;
+            recipeData.setQuantityOfPersonsSuitable(quantity);
+        }
+
+        recipeRepository.save(recipeData);
+    }
+
+    private void decreaseTheQuantityOfSuitablePersonsByRecipe(String dish) {
+        RecipeData recipeData = Optional.of(
+            recipeRepository.findByDish(dish))
+            .orElseThrow(() -> new RuntimeException("Could not update the recipe decreasing the quantity of suitable persons"));
+
+        if (recipeData.getQuantityOfPersonsSuitable() == null) {
+            recipeData.setQuantityOfPersonsSuitable(0);
+        } else {
+            Integer quantity = recipeData.getQuantityOfPersonsSuitable()  - 1;
+            recipeData.setQuantityOfPersonsSuitable(quantity);
+        }
+
+        recipeRepository.save(recipeData);
     }
 }
