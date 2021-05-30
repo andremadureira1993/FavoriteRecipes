@@ -27,7 +27,7 @@ paths:
   /signup:
     post:
       tags:
-        - SignUp
+        - Login
       summary: Sign-up a user into the application
       requestBody:
         required: true
@@ -44,10 +44,75 @@ paths:
                 type: string
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+  /recipes:
+    post:
+      tags:
+        - Recipe
+      summary: Creates a recipe in database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    put:
+      tags:
+        - Recipe
+      summary: Updates a recipe in database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
 
 
 components:
   schemas:
+    RecipeRequest:
+      type: object
+      description: Json object received in create and update recipe requests
+      properties:
+        recipe:
+          description: 'The recipe name'
+          type: string
+          example: 'Tradicional Coffee'
+        dateCreation:
+          description: 'Date and time of the recipe creation'
+          type: string
+          format: date-time
+          example: '29-05-2021T10:00'
+        isVegeratian:
+          description: Indicates if dish is vegetarian
+          type: boolean
+          example: false
+        ingredients:
+          description: 'The list of ingredients items'
+          type: array
+          items:
+            type: string
+        cookingInstructions:
+          description: 'Describe the steps of coking'
+          type: string
     SignUpRequest:
       type: object
       description: Json object received in Sign-up requests

@@ -20,6 +20,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable().authorizeRequests()
             .antMatchers("/signup").permitAll()
             .antMatchers("/signin").authenticated()
+//            .antMatchers("/recipes").authenticated()
             .and()
             .addFilter(new JWTAuthenticationFilter(authenticationManager()))
             .addFilter(new JWTAuthorizationFilter(authenticationManager(), customUserDetailService));
