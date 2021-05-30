@@ -3,6 +3,7 @@ package com.recipe.services;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import com.recipe.db.Login;
 import com.recipe.db.LoginRepository;
+import com.recipe.exceptions.FlowException;
+import com.recipe.openapi.ErrorTypeEnum;
 
 @Service
 public class CustomUserDetailService implements UserDetailsService {
@@ -26,7 +29,9 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Login login = Optional.ofNullable(loginRepository.findByUsername(username))
-            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            .orElseThrow(() -> new FlowException("User not found",
+                ErrorTypeEnum.INTERNAL,
+                HttpStatus.INTERNAL_SERVER_ERROR));
 
         List<GrantedAuthority> authorityListUser = AuthorityUtils.createAuthorityList("ROLE_USER", "ROLE_ADMIN");
 

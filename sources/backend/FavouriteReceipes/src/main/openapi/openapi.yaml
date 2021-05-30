@@ -253,6 +253,17 @@ components:
       type: integer
       description: The number total of person that the dish was suitable.
       example: 12
+
+    ErrorTypeEnum:
+      type: string
+      description: The type of the error. Supported values are CONFIGURATION, DATABASE, INTERNAL, INVALID_REQUEST, and MAPPING.
+      enum:
+        - CONFIGURATION
+        - DATABASE
+        - INTERNAL
+        - INVALID_REQUEST
+        - MAPPING
+
   responses:
     UnauthorizedError:
       description: Authentication information is missing or invalid

@@ -8,10 +8,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.recipe.db.RecipeData;
 import com.recipe.db.RecipeRepository;
+import com.recipe.exceptions.FlowException;
+import com.recipe.openapi.ErrorTypeEnum;
 import com.recipe.openapi.Recipe;
 import com.recipe.openapi.RecipeResponse;
 import com.recipe.util.Utils;
@@ -29,13 +32,16 @@ public class RecipeService {
 
     /**
      * Search if already exist an recipe with same name and create in database case not
+     *
      * @param request
      */
     public void addRecipe(Recipe request) {
         if (StringUtils.isBlank(request.getDish())) return;
 
         if (checkIfHasARecipeWithSameName(request.getDish())) {
-            throw new RuntimeException("Has already a recipe with same name in database");
+            throw new FlowException("Has already a recipe with same name in database",
+                ErrorTypeEnum.DATABASE,
+                HttpStatus.INTERNAL_SERVER_ERROR);
         } else {
             createRecipeInDatabase(request);
         }
@@ -45,6 +51,7 @@ public class RecipeService {
 
     /**
      * Search and update recipe in database
+     *
      * @param request
      */
     public void updateRecipe(Recipe request) {
@@ -61,6 +68,7 @@ public class RecipeService {
 
     /**
      * Update a recipe in database
+     *
      * @param request
      * @param recipeDataFounded
      */
@@ -74,6 +82,7 @@ public class RecipeService {
 
     /**
      * Create a recipe with incoming parameters in database
+     *
      * @param recipeDataRequest
      */
     private void createRecipeInDatabase(Recipe recipeDataRequest) {
@@ -89,6 +98,7 @@ public class RecipeService {
 
     /**
      * Search in database for other recipe with the same that we're trying to create
+     *
      * @param recipe
      * @return
      */
@@ -104,6 +114,7 @@ public class RecipeService {
 
     /**
      * Get the recipe using the incoming parameters
+     *
      * @param dish
      * @param isVegetarian
      * @return
@@ -119,6 +130,7 @@ public class RecipeService {
 
     /**
      * Search for recipes in database
+     *
      * @param dish
      * @param isVegetarian
      * @return
@@ -140,6 +152,7 @@ public class RecipeService {
 
     /**
      * Parse the database retrieved information for the expected RecipeResponse.
+     *
      * @param recipesData
      * @return
      */
@@ -159,12 +172,16 @@ public class RecipeService {
 
     /**
      * Removes a recipe from database
+     *
      * @param recipeId
      */
     public void removeRecipe(String recipeId) {
         RecipeData recipeData = Optional.of(
             repository.findById(recipeId))
-            .orElseThrow(() -> new RuntimeException("Not found"));
+            .orElseThrow(() -> new FlowException("Not found",
+                ErrorTypeEnum.DATABASE,
+                HttpStatus.NOT_FOUND));
+
         repository.delete(recipeData);
 
         LOGGER.info("Successfully removed recipe with recipeId: " + recipeId + " from database");
