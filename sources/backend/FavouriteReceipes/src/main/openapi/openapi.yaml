@@ -1,0 +1,262 @@
+openapi: 3.0.3
+info:
+  title: Favourite Receipes
+  description: 'The openapi describing each endpoint from favourite recipes APIs.'
+  contact:
+    email: andremadureira1993@gmail.com
+  version: v3
+servers:
+  - url: http://localhost:8080/api/
+    description: Localhost environment.
+
+paths:
+  /signin:
+    get:
+      tags:
+        - Login
+      summary: Login into the application
+      responses:
+        '200':
+          description: OK
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /signup:
+    post:
+      tags:
+        - Login
+      summary: Sign-up a user into the application
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpRequest'
+      responses:
+        '200':
+          description: OK
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /recipes:
+    post:
+      tags:
+        - Recipe
+      summary: Creates a recipe in database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+      responses:
+        '200':
+          description: OK
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    put:
+      tags:
+        - Recipe
+      summary: Updates a recipe in database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+      responses:
+        '200':
+          description: OK
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    get:
+      tags:
+        - Recipe
+      summary: Retrieve recipes from database
+      parameters:
+        - in: query
+          name: dish
+          schema:
+            $ref: '#/components/schemas/dish'
+        - in: query
+          name: isVegetarian
+          schema:
+            $ref: '#/components/schemas/isVegetarian'
+      responses:
+        '200':
+          description: Successfully retrieved recipes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecipeResponse'
+  /recipes/{dishId}:
+    delete:
+      tags:
+        - Recipe
+      summary: Remove the recipe from database
+      parameters:
+        - in: path
+          name: dishId
+          schema:
+            $ref: '#/components/schemas/dish'
+          required: true
+      responses:
+        '200':
+          description: OK
+  /favorites:
+    get:
+      tags:
+        - Favorite
+      summary: Get all favorites for each person
+      responses:
+        '200':
+          description: Successfully retrieved favorites
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserFavoritesResponse'
+  /favorites/all:
+    get:
+      tags:
+        - Favorite
+      summary: Get all Recipes and the total number of person that has set as favorite
+      responses:
+        '200':
+          description: Successfully retrieved recipes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FavoritesResponse'
+  /favorites/{dishId}:
+    post:
+      tags:
+        - Favorite
+      summary: Add a dish to favorites for a user
+      parameters:
+        - in: path
+          name: dishId
+          schema:
+            $ref: '#/components/schemas/dish'
+          required: true
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Favorite
+      summary: Remove a relation of recipe for the logged user
+      parameters:
+        - in: path
+          name: dishId
+          schema:
+            $ref: '#/components/schemas/dish'
+          required: true
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    UserFavoritesResponse:
+      type: object
+      description: All favorites for the current user
+      properties:
+        favoriteId:
+          $ref: '#/components/schemas/favoriteId'
+        recipe:
+          $ref: '#/components/schemas/RecipeResponse'
+
+    FavoritesResponse:
+      type: object
+      description: The total of favorite and number of person the dish is suitable.
+      properties:
+        dish:
+          $ref: '#/components/schemas/dish'
+        totalPersonSuitable:
+          $ref: '#/components/schemas/totalPersonSuitable'
+    RecipeResponse:
+      type: object
+      description: Json object received in create and update recipe requests
+      properties:
+        id:
+          description: The recipe id
+          type: string
+        dish:
+          $ref: '#/components/schemas/dish'
+        dateAndTimeOfCreation:
+          $ref: '#/components/schemas/dateAndTimeOfCreation'
+        isVegetarian:
+          $ref: '#/components/schemas/isVegetarian'
+        ingredients:
+          $ref: '#/components/schemas/ingredients'
+        cookingInstructions:
+          $ref: '#/components/schemas/cookingInstructions'
+        totalPersonSuitable:
+          $ref: '#/components/schemas/totalPersonSuitable'
+    Recipe:
+      type: object
+      description: Json object received in create and update recipe requests
+      properties:
+        dish:
+          $ref: '#/components/schemas/dish'
+        dateAndTimeOfCreation:
+          $ref: '#/components/schemas/dateAndTimeOfCreation'
+        isVegetarian:
+          $ref: '#/components/schemas/isVegetarian'
+        ingredients:
+          $ref: '#/components/schemas/ingredients'
+        cookingInstructions:
+          $ref: '#/components/schemas/cookingInstructions'
+    SignUpRequest:
+      type: object
+      description: Json object received in Sign-up requests
+      required:
+        - username
+        - password
+      properties:
+        username:
+          description: Username that will be used in the login
+          type: string
+          example: usernameabc
+        password:
+          description: Password that will be used in the login
+          type: string
+          example: abc123
+    dish:
+      type: string
+      description: 'The recipe name'
+      example: 'Traditional Coffee'
+    dateAndTimeOfCreation:
+      type: string
+      description: 'Date and time of the recipe creation'
+      example: '29-05-2021 10:00'
+    isVegetarian:
+      type: boolean
+      description: Indicates if dish is vegetarian
+      example: false
+    ingredients:
+      type: array
+      description: 'The list of ingredients items'
+      items:
+        type: string
+    cookingInstructions:
+      type: string
+      description: 'Describe the steps of coking'
+    favoriteId:
+      type: string
+      description: 'The recipe id'
+      example: "abc"
+    totalPersonSuitable:
+      type: integer
+      description: The number total of person that the dish was suitable.
+      example: 12
+  responses:
+    UnauthorizedError:
+      description: Authentication information is missing or invalid
+      headers:
+        Authenticate:
+          schema:
+            type: string
