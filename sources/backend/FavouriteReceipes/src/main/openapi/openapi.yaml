@@ -18,10 +18,6 @@ paths:
       responses:
         '200':
           description: OK
-          content:
-            text/plain:
-              schema:
-                type: string
         '401':
           $ref: '#/components/responses/UnauthorizedError'
   /signup:
@@ -38,10 +34,6 @@ paths:
       responses:
         '200':
           description: OK
-          content:
-            text/plain:
-              schema:
-                type: string
         '401':
           $ref: '#/components/responses/UnauthorizedError'
   /recipes:
@@ -54,14 +46,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RecipeRequest'
+              $ref: '#/components/schemas/Recipe'
       responses:
         '200':
           description: OK
-          content:
-            text/plain:
-              schema:
-                type: string
         '401':
           $ref: '#/components/responses/UnauthorizedError'
     put:
@@ -73,46 +61,51 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RecipeRequest'
+              $ref: '#/components/schemas/Recipe'
       responses:
         '200':
           description: OK
-          content:
-            text/plain:
-              schema:
-                type: string
         '401':
           $ref: '#/components/responses/UnauthorizedError'
-
-
+    get:
+      tags:
+        - Recipe
+      summary: Retrieve recipes from database
+      parameters:
+        - in: query
+          name: dish
+          schema:
+            $ref: '#/components/schemas/dish'
+        - in: query
+          name: isVegetarian
+          schema:
+            $ref: '#/components/schemas/isVegetarian'
+      responses:
+        '200':
+          description: Successfully retrieved recipes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recipe'
 
 components:
   schemas:
-    RecipeRequest:
+    Recipe:
       type: object
       description: Json object received in create and update recipe requests
       properties:
-        recipe:
-          description: 'The recipe name'
-          type: string
-          example: 'Tradicional Coffee'
-        dateCreation:
-          description: 'Date and time of the recipe creation'
-          type: string
-          format: date-time
-          example: '29-05-2021T10:00'
-        isVegeratian:
-          description: Indicates if dish is vegetarian
-          type: boolean
-          example: false
+        dish:
+          $ref: '#/components/schemas/dish'
+        dateAndTimeOfCreation:
+          $ref: '#/components/schemas/dateAndTimeOfCreation'
+        isVegetarian:
+          $ref: '#/components/schemas/isVegetarian'
         ingredients:
-          description: 'The list of ingredients items'
-          type: array
-          items:
-            type: string
+          $ref: '#/components/schemas/ingredients'
         cookingInstructions:
-          description: 'Describe the steps of coking'
-          type: string
+          $ref: '#/components/schemas/cookingInstructions'
     SignUpRequest:
       type: object
       description: Json object received in Sign-up requests
@@ -128,6 +121,26 @@ components:
           description: Password that will be used in the login
           type: string
           example: abc123
+    dish:
+      type: string
+      description: 'The recipe name'
+      example: 'Traditional Coffee'
+    dateAndTimeOfCreation:
+      type: string
+      description: 'Date and time of the recipe creation'
+      example: '29-05-2021 10:00'
+    isVegetarian:
+      type: boolean
+      description: Indicates if dish is vegetarian
+      example: false
+    ingredients:
+      type: array
+      description: 'The list of ingredients items'
+      items:
+        type: string
+    cookingInstructions:
+      type: string
+      description: 'Describe the steps of coking'
   responses:
     UnauthorizedError:
       description: Authentication information is missing or invalid

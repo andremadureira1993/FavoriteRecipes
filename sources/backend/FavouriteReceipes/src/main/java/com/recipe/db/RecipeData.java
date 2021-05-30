@@ -5,13 +5,13 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 
-public class Recipe {
+public class RecipeData {
 
     @Id
     private String id;
 
     @NotNull
-    private String recipe;
+    private String dish;
 
     @NotNull
     private Date dateCreation;
@@ -25,12 +25,12 @@ public class Recipe {
     @NotNull
     private String cookingInstructions;
 
-    public String getRecipe() {
-        return recipe;
+    public String getDish() {
+        return dish;
     }
 
-    public void setRecipe(String recipe) {
-        this.recipe = recipe;
+    public void setDish(String dish) {
+        this.dish = dish;
     }
 
     public Date getDateCreation() {

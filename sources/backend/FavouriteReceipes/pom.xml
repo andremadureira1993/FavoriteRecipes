@@ -153,13 +153,13 @@
                         <configuration>
                             <inputSpec>src/main/openapi/openapi.yaml</inputSpec>
                             <generatorName>spring</generatorName>
-                            <modelPackage>com.recipe.openapi</modelPackage>
-                            <apiPackage>com.recipe.openapi</apiPackage>
+                            <modelPackage>com.recipeData.openapi</modelPackage>
+                            <apiPackage>com.recipeData.openapi</apiPackage>
                             <configOptions>
                                 <artifactId>FavouriteRecipes</artifactId>
-                                <groupId>com.recipe</groupId>
-                                <basePackage>com.recipe.openapi</basePackage>
-                                <configPackage>com.recipe.openapi</configPackage>
+                                <groupId>com.recipeData</groupId>
+                                <basePackage>com.recipeData.openapi</basePackage>
+                                <configPackage>com.recipeData.openapi</configPackage>
                                 <interfaceOnly>true</interfaceOnly>
                             </configOptions>
                         </configuration>

@@ -7,10 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.recipe.openapi.SignUpRequest;
-import com.recipe.openapi.SignupApi;
 import com.recipe.services.SignupService;
+import com.recipeData.openapi.SignUpRequest;
+import com.recipeData.openapi.SignupApi;
 
 /**
  * A controller for login
@@ -24,10 +23,8 @@ public class SignupController implements SignupApi {
     private SignupService signupService;
 
     @Override
-    public ResponseEntity<String> signupPost(@Valid SignUpRequest signUpRequest) {
-        ObjectMapper objectMapper = new ObjectMapper();
-
+    public ResponseEntity<Void> signupPost(@Valid SignUpRequest signUpRequest) {
         signupService.addUser(signUpRequest);
-        return null;
+        return ResponseEntity.ok(null);
     }
 }
