@@ -47,11 +47,12 @@ public class RecipeController implements RecipesApi {
     }
 
     @Override
-    public ResponseEntity<Void> recipesDishDelete(String recipeId) {
+    public ResponseEntity<Void> recipesDishIdDelete(String recipeId) {
         LOGGER.info("Processing remove recipe request. Recipe id: " + recipeId);
 
         recipeService.removeRecipe(recipeId);
 
         return ResponseEntity.ok(null);
     }
+
 }

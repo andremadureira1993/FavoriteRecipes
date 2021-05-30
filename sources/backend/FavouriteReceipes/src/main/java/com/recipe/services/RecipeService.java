@@ -20,8 +20,10 @@ import com.recipe.util.Utils;
 public class RecipeService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RecipeService.class);
+
     @Autowired
     public Utils utils;
+
     @Autowired
     private RecipeRepository repository;
 
