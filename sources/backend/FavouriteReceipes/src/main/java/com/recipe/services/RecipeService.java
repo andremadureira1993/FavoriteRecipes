@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.recipe.db.RecipeData;
 import com.recipe.db.RecipeRepository;
 import com.recipe.util.Utils;
-import com.recipeData.openapi.Recipe;
+import com.recipe.openapi.Recipe;
 
 @Service
 public class RecipeService {

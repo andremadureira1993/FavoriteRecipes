@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import com.recipe.services.SignupService;
-import com.recipeData.openapi.SignUpRequest;
-import com.recipeData.openapi.SignupApi;
+import com.recipe.openapi.SignUpRequest;
+import com.recipe.openapi.SignupApi;
 
 /**
  * A controller for login

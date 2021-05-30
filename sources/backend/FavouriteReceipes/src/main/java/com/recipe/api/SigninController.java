@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
-import com.recipeData.openapi.SigninApi;
+import com.recipe.openapi.SigninApi;
 
 
 /**

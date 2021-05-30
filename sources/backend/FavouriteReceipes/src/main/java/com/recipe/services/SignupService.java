@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.recipe.db.Login;
 import com.recipe.db.LoginRepository;
 import com.recipe.util.Utils;
-import com.recipeData.openapi.SignUpRequest;
+import com.recipe.openapi.SignUpRequest;
 
 /**
  * Process signup requests

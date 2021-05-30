@@ -9,8 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import com.recipe.services.RecipeService;
-import com.recipeData.openapi.Recipe;
-import com.recipeData.openapi.RecipesApi;
+import com.recipe.openapi.Recipe;
+import com.recipe.openapi.RecipesApi;
 
 @Controller
 public class RecipeController implements RecipesApi {
