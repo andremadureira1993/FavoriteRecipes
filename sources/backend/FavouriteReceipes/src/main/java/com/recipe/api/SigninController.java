@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 
 import com.recipe.openapi.SigninApi;
 
+
 /**
  * A controller for login
  */
@@ -16,8 +17,7 @@ public class SigninController implements SigninApi {
     private static final Logger LOGGER = LoggerFactory.getLogger(SigninController.class);
 
     @Override
-    public ResponseEntity<String> signinGet() {
-        LOGGER.info("User login");
-        return null;
+    public ResponseEntity<Void> signinGet() {
+        return ResponseEntity.ok(null);
     }
 }

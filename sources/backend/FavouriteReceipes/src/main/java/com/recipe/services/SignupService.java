@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.recipe.db.Login;
-import com.recipe.db.UserRepository;
-import com.recipe.openapi.SignUpRequest;
+import com.recipe.db.LoginRepository;
 import com.recipe.util.Utils;
+import com.recipe.openapi.SignUpRequest;
 
 /**
  * Process signup requests
@@ -20,7 +20,7 @@ public class SignupService {
     private static final Logger LOGGER = LoggerFactory.getLogger(SignupService.class);
 
     @Autowired
-    private UserRepository userRepository;
+    private LoginRepository loginRepository;
 
     @Autowired
     private Utils utils;
@@ -45,7 +45,7 @@ public class SignupService {
      * @return
      */
     public boolean isUsernameAlreadyInUse(String username) {
-        Login login = userRepository.findByUsername(username);
+        Login login = loginRepository.findByUsername(username);
 
         if (login != null) {
             return true;
@@ -64,7 +64,7 @@ public class SignupService {
         login.setUsername(signUpRequest.getUsername());
         String encodedPassword = utils.encodePassword(signUpRequest.getPassword());
         login.setPassword(encodedPassword);
-        userRepository.save(login);
+        loginRepository.save(login);
         LOGGER.info("Successfully created user " + signUpRequest.getUsername() + " in database");
     }
 }
