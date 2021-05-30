@@ -101,9 +101,9 @@ public class FavoriteService {
     private List<FavoritesResponse> parseResponseFavoritesTotal(Map<String, Integer> totals) {
         List<FavoritesResponse> favoritesTotal = new ArrayList<>();
 
-        totals.forEach((key, total) -> {
+        totals.forEach((dish, total) -> {
             FavoritesResponse favorite = new FavoritesResponse();
-            favorite.setDish(key);
+            favorite.setDish(dish);
             favorite.setTotalPersonSuitable(total);
             favoritesTotal.add(favorite);
         });
@@ -169,8 +169,12 @@ public class FavoriteService {
     }
 
     private void increaseTheQuantityOfSuitablePersonsByRecipe(RecipeData recipeData) {
-        Integer quantity = recipeData.getQuantityOfPersonsSuitable()  + 1;
-        recipeData.setQuantityOfPersonsSuitable(quantity);
+        if (recipeData.getQuantityOfPersonsSuitable() == null) {
+            recipeData.setQuantityOfPersonsSuitable(1);
+        } else {
+            Integer quantity = recipeData.getQuantityOfPersonsSuitable()  + 1;
+            recipeData.setQuantityOfPersonsSuitable(quantity);
+        }
 
         recipeRepository.save(recipeData);
     }
@@ -180,8 +184,12 @@ public class FavoriteService {
             recipeRepository.findByDish(dish))
             .orElseThrow(() -> new RuntimeException("Could not update the recipe decreasing the quantity of suitable persons"));
 
-        Integer quantity = recipeData.getQuantityOfPersonsSuitable()  - 1;
-        recipeData.setQuantityOfPersonsSuitable(quantity);
+        if (recipeData.getQuantityOfPersonsSuitable() == null) {
+            recipeData.setQuantityOfPersonsSuitable(0);
+        } else {
+            Integer quantity = recipeData.getQuantityOfPersonsSuitable()  - 1;
+            recipeData.setQuantityOfPersonsSuitable(quantity);
+        }
 
         recipeRepository.save(recipeData);
     }
