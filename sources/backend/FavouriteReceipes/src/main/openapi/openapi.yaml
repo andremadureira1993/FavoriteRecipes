@@ -88,10 +88,40 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Recipe'
-
+                  $ref: '#/components/schemas/RecipeResponse'
+  /recipes/{dish}:
+    delete:
+      tags:
+        - Recipe
+      summary: Remove the recipe from database
+      parameters:
+        - in: path
+          name: dish
+          schema:
+            $ref: '#/components/schemas/dish'
+          required: true
+      responses:
+        '200':
+          description: OK
 components:
   schemas:
+    RecipeResponse:
+      type: object
+      description: Json object received in create and update recipe requests
+      properties:
+        id:
+          description: The recipe id
+          type: string
+        dish:
+          $ref: '#/components/schemas/dish'
+        dateAndTimeOfCreation:
+          $ref: '#/components/schemas/dateAndTimeOfCreation'
+        isVegetarian:
+          $ref: '#/components/schemas/isVegetarian'
+        ingredients:
+          $ref: '#/components/schemas/ingredients'
+        cookingInstructions:
+          $ref: '#/components/schemas/cookingInstructions'
     Recipe:
       type: object
       description: Json object received in create and update recipe requests
