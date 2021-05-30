@@ -9,6 +9,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.recipe.db.RecipeData;
+import com.recipe.openapi.RecipeResponse;
+
 @Component
 public class Utils {
 
@@ -45,5 +48,19 @@ public class Utils {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         return principal.toString();
+    }
+
+    public RecipeResponse mapRecipeDataToRecipeResponse(RecipeData recipeData) {
+
+        RecipeResponse recipe = new RecipeResponse();
+
+        recipe.setId(recipeData.getId());
+        recipe.setDish(recipeData.getDish());
+        recipe.setCookingInstructions(recipeData.getCookingInstructions());
+        recipe.setDateAndTimeOfCreation(parseFromDateToString(recipeData.getDateCreation()));
+        recipe.setIngredients(recipeData.getIngredients());
+        recipe.setIsVegetarian(recipeData.isVegetarian());
+
+        return recipe;
     }
 }

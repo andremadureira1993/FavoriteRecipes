@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 
 import com.recipe.openapi.FavoritesApi;
 import com.recipe.openapi.FavoritesResponse;
+import com.recipe.openapi.UserFavoritesResponse;
 import com.recipe.services.FavoriteService;
 import io.swagger.models.Response;
 
@@ -30,7 +31,7 @@ public class FavoriteController implements FavoritesApi {
     }
 
     @Override
-    public ResponseEntity<List<FavoritesResponse>> favoritesGet() {
+    public ResponseEntity<List<FavoritesResponse>> favoritesAllGet() {
         LOGGER.info("Processing get all favorites recipes");
 
         return ResponseEntity.ok(favoriteService.getTotalOfEachFavoriteRecipe());
@@ -43,5 +44,12 @@ public class FavoriteController implements FavoritesApi {
         favoriteService.deleteFavorite(dishId);
 
         return ResponseEntity.ok(null);
+    }
+
+    @Override
+    public ResponseEntity<List<UserFavoritesResponse>> favoritesGet() {
+        LOGGER.info("Processing get favorites by user");
+
+        return ResponseEntity.ok(favoriteService.getFavoritesByUser());
     }
 }

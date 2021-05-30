@@ -107,6 +107,20 @@ paths:
     get:
       tags:
         - Favorite
+      summary: Get all favorites for each person
+      responses:
+        '200':
+          description: Successfully retrieved favorites
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserFavoritesResponse'
+  /favorites/all:
+    get:
+      tags:
+        - Favorite
       summary: Get all Recipes and the total number of person that has set as favorite
       responses:
         '200':
@@ -146,6 +160,15 @@ paths:
           description: OK
 components:
   schemas:
+    UserFavoritesResponse:
+      type: object
+      description: All favorites for the current user
+      properties:
+        favoriteId:
+          $ref: '#/components/schemas/favoriteId'
+        recipe:
+          $ref: '#/components/schemas/RecipeResponse'
+
     FavoritesResponse:
       type: object
       description: The total of favorite and number of person the dish is suitable.
@@ -220,7 +243,7 @@ components:
     cookingInstructions:
       type: string
       description: 'Describe the steps of coking'
-    favoriteRecipeId:
+    favoriteId:
       type: string
       description: 'The recipe id'
       example: "abc"
