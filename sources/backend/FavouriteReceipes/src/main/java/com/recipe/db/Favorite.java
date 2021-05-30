@@ -14,6 +14,9 @@ public class Favorite {
     @NotNull
     private String recipeId;
 
+    @NotNull
+    private String dish;
+
     public String getId() {
         return id;
     }
@@ -32,5 +35,14 @@ public class Favorite {
 
     public void setRecipeId(String recipeId) {
         this.recipeId = recipeId;
+    }
+
+    public String getDish() {
+        
+        return dish;
+    }
+
+    public void setDish(String dish) {
+        this.dish = dish;
     }
 }

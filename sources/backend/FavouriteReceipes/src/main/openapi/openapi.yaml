@@ -103,6 +103,20 @@ paths:
       responses:
         '200':
           description: OK
+  /favorites:
+    get:
+      tags:
+        - Favorite
+      summary: Get all Recipes and the total number of person that has set as favorite
+      responses:
+        '200':
+          description: Successfully retrieved recipes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FavoritesResponse'
   /favorites/{dishId}:
     post:
       tags:
@@ -119,6 +133,14 @@ paths:
           description: OK
 components:
   schemas:
+    FavoritesResponse:
+      type: object
+      description: The total of favorite and number of person the dish is suitable.
+      properties:
+        dish:
+          $ref: '#/components/schemas/dish'
+        totalPersonSuitable:
+          $ref: '#/components/schemas/totalPersonSuitable'
     RecipeResponse:
       type: object
       description: Json object received in create and update recipe requests
@@ -185,6 +207,14 @@ components:
     cookingInstructions:
       type: string
       description: 'Describe the steps of coking'
+    favoriteRecipeId:
+      type: string
+      description: 'The recipe id'
+      example: "abc"
+    totalPersonSuitable:
+      type: integer
+      description: The number total of person that the dish was suitable.
+      example: 12
   responses:
     UnauthorizedError:
       description: Authentication information is missing or invalid
