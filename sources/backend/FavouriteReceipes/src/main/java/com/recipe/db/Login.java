@@ -1,21 +1,14 @@
 package com.recipe.db;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import org.springframework.data.annotation.Id;
 
-@Entity
-@Table(name = "users")
 public class Login {
 
     @Id
-    @Column(name = "username")
     @NotNull
     private String username;
 
-    @Column(name = "password")
     @NotNull
     private String password;
 
