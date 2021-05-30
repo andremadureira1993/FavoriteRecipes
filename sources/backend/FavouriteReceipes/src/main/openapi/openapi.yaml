@@ -131,6 +131,19 @@ paths:
       responses:
         '200':
           description: OK
+    delete:
+      tags:
+        - Favorite
+      summary: Remove a relation of recipe for the logged user
+      parameters:
+        - in: path
+          name: dishId
+          schema:
+            $ref: '#/components/schemas/dish'
+          required: true
+      responses:
+        '200':
+          description: OK
 components:
   schemas:
     FavoritesResponse:
