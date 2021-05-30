@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -38,5 +39,11 @@ public class Utils {
 
     public String parseFromDateToString(Date date) {
       return sdf.format(date);
+    }
+
+    public String extractUsernameFromJwt() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return principal.toString();
     }
 }

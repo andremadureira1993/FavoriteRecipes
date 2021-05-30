@@ -89,14 +89,28 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/RecipeResponse'
-  /recipes/{dish}:
+  /recipes/{dishId}:
     delete:
       tags:
         - Recipe
       summary: Remove the recipe from database
       parameters:
         - in: path
-          name: dish
+          name: dishId
+          schema:
+            $ref: '#/components/schemas/dish'
+          required: true
+      responses:
+        '200':
+          description: OK
+  /favorites/{dishId}:
+    post:
+      tags:
+        - Favorite
+      summary: Add a dish to favorites for a user
+      parameters:
+        - in: path
+          name: dishId
           schema:
             $ref: '#/components/schemas/dish'
           required: true
