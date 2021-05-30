@@ -194,6 +194,8 @@ components:
           $ref: '#/components/schemas/ingredients'
         cookingInstructions:
           $ref: '#/components/schemas/cookingInstructions'
+        totalPersonSuitable:
+          $ref: '#/components/schemas/totalPersonSuitable'
     Recipe:
       type: object
       description: Json object received in create and update recipe requests

@@ -68,6 +68,8 @@ public class FavoriteService {
 
         favoriteRepository.save(favorite);
 
+        increaseTheQuantityOfSuitablePersonsByRecipe(recipeData);
+
         LOGGER.info("Successfully create relation for username: " + username + " and recipeId: " + recipeId);
     }
 
@@ -121,6 +123,8 @@ public class FavoriteService {
 
         favoriteRepository.delete(favorite);
 
+        decreaseTheQuantityOfSuitablePersonsByRecipe(favorite.getDish());
+
         LOGGER.info("Successfully removed relation for username: " + username + " and recipeId: " + recipeId);
     }
 
@@ -162,5 +166,23 @@ public class FavoriteService {
         LOGGER.info("Successfully created user favorites response: " + response.toString());
 
         return response;
+    }
+
+    private void increaseTheQuantityOfSuitablePersonsByRecipe(RecipeData recipeData) {
+        Integer quantity = recipeData.getQuantityOfPersonsSuitable()  + 1;
+        recipeData.setQuantityOfPersonsSuitable(quantity);
+
+        recipeRepository.save(recipeData);
+    }
+
+    private void decreaseTheQuantityOfSuitablePersonsByRecipe(String dish) {
+        RecipeData recipeData = Optional.of(
+            recipeRepository.findByDish(dish))
+            .orElseThrow(() -> new RuntimeException("Could not update the recipe decreasing the quantity of suitable persons"));
+
+        Integer quantity = recipeData.getQuantityOfPersonsSuitable()  - 1;
+        recipeData.setQuantityOfPersonsSuitable(quantity);
+
+        recipeRepository.save(recipeData);
     }
 }

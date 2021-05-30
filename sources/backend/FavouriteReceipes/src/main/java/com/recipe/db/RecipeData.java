@@ -25,6 +25,8 @@ public class RecipeData {
     @NotNull
     private String cookingInstructions;
 
+    @NotNull Integer quantityOfPersonsSuitable;
+
     public String getDish() {
         return dish;
     }
@@ -67,5 +69,13 @@ public class RecipeData {
 
     public String getId() {
         return id;
+    }
+
+    public Integer getQuantityOfPersonsSuitable() {
+        return quantityOfPersonsSuitable;
+    }
+
+    public void setQuantityOfPersonsSuitable(Integer quantityOfPersonsSuitable) {
+        this.quantityOfPersonsSuitable = quantityOfPersonsSuitable;
     }
 }
