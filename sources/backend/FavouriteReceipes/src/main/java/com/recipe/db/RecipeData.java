@@ -64,4 +64,8 @@ public class RecipeData {
     public void setCookingInstructions(String cookingInstructions) {
         this.cookingInstructions = cookingInstructions;
     }
+
+    public String getId() {
+        return id;
+    }
 }

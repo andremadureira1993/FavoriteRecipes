@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
+import com.recipe.openapi.RecipeResponse;
 import com.recipe.services.RecipeService;
 import com.recipe.openapi.Recipe;
 import com.recipe.openapi.RecipesApi;
@@ -22,6 +23,8 @@ public class RecipeController implements RecipesApi {
 
     @Override
     public ResponseEntity<Void> recipesPost(@Valid Recipe request) {
+        LOGGER.info("Processing create recipe request. Request: " + request.toString());
+
         recipeService.addRecipe(request);
 
         return ResponseEntity.ok(null);
@@ -29,16 +32,26 @@ public class RecipeController implements RecipesApi {
 
     @Override
     public ResponseEntity<Void> recipesPut(@Valid Recipe request) {
+        LOGGER.info("Processing update recipe request. Request: " + request.toString());
+
         recipeService.updateRecipe(request);
 
         return ResponseEntity.ok(null);
     }
 
     @Override
-    public ResponseEntity<List<Recipe>> recipesGet(@Valid String dish, @Valid Boolean isVegetarian) {
-
-        LOGGER.info("Processing get recipes request");
+    public ResponseEntity<List<RecipeResponse>> recipesGet(@Valid String dish, @Valid Boolean isVegetarian) {
+        LOGGER.info("Processing get recipes request. dish: " + dish + " - isVegetarian: " + isVegetarian);
 
         return ResponseEntity.ok(recipeService.getRecipe(dish, isVegetarian));
+    }
+
+    @Override
+    public ResponseEntity<Void> recipesDishDelete(String recipeId) {
+        LOGGER.info("Processing remove recipe request. Recipe id: " + recipeId);
+
+        recipeService.removeRecipe(recipeId);
+
+        return ResponseEntity.ok(null);
     }
 }
