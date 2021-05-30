@@ -16,6 +16,8 @@ import com.recipe.db.FavoriteRepository;
 import com.recipe.db.RecipeData;
 import com.recipe.db.RecipeRepository;
 import com.recipe.openapi.FavoritesResponse;
+import com.recipe.openapi.RecipeResponse;
+import com.recipe.openapi.UserFavoritesResponse;
 import com.recipe.util.Utils;
 
 @Service
@@ -115,7 +117,7 @@ public class FavoriteService {
 
         Favorite favorite = Optional.of(
             favoriteRepository.findByRecipeIdAndUsername(recipeId, username))
-            .orElseThrow(() -> new RuntimeException("Relation was not found in database forusername: " + username + " and recipeId: " + recipeId));
+            .orElseThrow(() -> new RuntimeException("Relation was not found in database for username: " + username + " and recipeId: " + recipeId));
 
         favoriteRepository.delete(favorite);
 
@@ -126,5 +128,39 @@ public class FavoriteService {
         if (StringUtils.isBlank(recipeId) || StringUtils.isBlank(username)) {
             throw new RuntimeException("RecipeId must be not null and user must be logged with a valid token");
         }
+    }
+
+    public List<UserFavoritesResponse> getFavoritesByUser() {
+        String username = utils.extractUsernameFromJwt();
+
+        if (StringUtils.isBlank(username)) {
+            throw new RuntimeException("User must be logged with a valid token");
+        }
+
+        List<Favorite> favorites = Optional.of(
+            favoriteRepository.findByUsername(username))
+            .orElseThrow(() -> new RuntimeException("No favorite was found for the username: " + username));
+
+        return parseResponseFavoritesByUserFavorites(favorites);
+    }
+
+    private List<UserFavoritesResponse> parseResponseFavoritesByUserFavorites(List<Favorite> favorites) {
+        List<UserFavoritesResponse> response = new ArrayList<>();
+
+        for (Favorite favorite: favorites) {
+            UserFavoritesResponse userFavorite = new UserFavoritesResponse();
+
+            userFavorite.setFavoriteId(favorite.getId());
+            RecipeData recipeData = recipeRepository.findByDish(favorite.getDish());
+            RecipeResponse recipe = utils.mapRecipeDataToRecipeResponse(recipeData);
+
+            userFavorite.setRecipe(recipe);
+
+            response.add(userFavorite);
+        }
+
+        LOGGER.info("Successfully created user favorites response: " + response.toString());
+
+        return response;
     }
 }

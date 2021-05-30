@@ -147,13 +147,7 @@ public class RecipeService {
         List<RecipeResponse> recipes = new ArrayList<>();
 
         for (RecipeData recipeData : recipesData) {
-            RecipeResponse recipe = new RecipeResponse();
-            recipe.setId(recipeData.getId());
-            recipe.setDish(recipeData.getDish());
-            recipe.setCookingInstructions(recipeData.getCookingInstructions());
-            recipe.setDateAndTimeOfCreation(utils.parseFromDateToString(recipeData.getDateCreation()));
-            recipe.setIngredients(recipeData.getIngredients());
-            recipe.setIsVegetarian(recipeData.isVegetarian());
+            RecipeResponse recipe = utils.mapRecipeDataToRecipeResponse(recipeData);
 
             recipes.add(recipe);
         }
