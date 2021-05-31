@@ -60,6 +60,7 @@ public class Utils {
         recipe.setDateAndTimeOfCreation(parseFromDateToString(recipeData.getDateCreation()));
         recipe.setIngredients(recipeData.getIngredients());
         recipe.setIsVegetarian(recipeData.isVegetarian());
+        recipe.setTotalPersonSuitable(recipeData.getQuantityOfPersonsSuitable());
 
         return recipe;
     }

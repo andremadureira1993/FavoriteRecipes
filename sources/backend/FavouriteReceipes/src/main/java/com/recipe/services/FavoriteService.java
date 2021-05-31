@@ -9,12 +9,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.recipe.db.Favorite;
 import com.recipe.db.FavoriteRepository;
 import com.recipe.db.RecipeData;
 import com.recipe.db.RecipeRepository;
+import com.recipe.exceptions.FlowException;
+import com.recipe.openapi.ErrorTypeEnum;
 import com.recipe.openapi.FavoritesResponse;
 import com.recipe.openapi.RecipeResponse;
 import com.recipe.openapi.UserFavoritesResponse;
@@ -74,8 +77,6 @@ public class FavoriteService {
     }
 
     public List<FavoritesResponse> getTotalOfEachFavoriteRecipe() {
-        List<FavoritesResponse> favoritesResponses = new ArrayList<>();
-
         List<Favorite> favorites = favoriteRepository.findAll();
 
         return createTheTotalOfEachFavorite(favorites);
@@ -119,7 +120,11 @@ public class FavoriteService {
 
         Favorite favorite = Optional.of(
             favoriteRepository.findByRecipeIdAndUsername(recipeId, username))
-            .orElseThrow(() -> new RuntimeException("Relation was not found in database for username: " + username + " and recipeId: " + recipeId));
+            .orElseThrow(() -> {
+                throw new FlowException("Relation was not found in database for username: " + username + " and recipeId: " + recipeId,
+                    ErrorTypeEnum.DATABASE,
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+            });
 
         favoriteRepository.delete(favorite);
 
@@ -130,7 +135,9 @@ public class FavoriteService {
 
     public void validateRecipeIdAndUsername(String username, String recipeId) {
         if (StringUtils.isBlank(recipeId) || StringUtils.isBlank(username)) {
-            throw new RuntimeException("RecipeId must be not null and user must be logged with a valid token");
+            throw new FlowException("RecipeId must be not null and user must be logged with a valid token",
+                ErrorTypeEnum.INVALID_REQUEST,
+                HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -138,12 +145,18 @@ public class FavoriteService {
         String username = utils.extractUsernameFromJwt();
 
         if (StringUtils.isBlank(username)) {
-            throw new RuntimeException("User must be logged with a valid token");
+            throw new FlowException("User must be logged with a valid token",
+                ErrorTypeEnum.INVALID_REQUEST,
+                HttpStatus.BAD_REQUEST);
         }
 
         List<Favorite> favorites = Optional.of(
             favoriteRepository.findByUsername(username))
-            .orElseThrow(() -> new RuntimeException("No favorite was found for the username: " + username));
+            .orElseThrow(() -> {
+                throw new FlowException("No favorite was found for the username: " + username,
+                    ErrorTypeEnum.INVALID_REQUEST,
+                    HttpStatus.NOT_FOUND);
+            });
 
         return parseResponseFavoritesByUserFavorites(favorites);
     }
@@ -151,7 +164,7 @@ public class FavoriteService {
     private List<UserFavoritesResponse> parseResponseFavoritesByUserFavorites(List<Favorite> favorites) {
         List<UserFavoritesResponse> response = new ArrayList<>();
 
-        for (Favorite favorite: favorites) {
+        for (Favorite favorite : favorites) {
             UserFavoritesResponse userFavorite = new UserFavoritesResponse();
 
             userFavorite.setFavoriteId(favorite.getId());
@@ -172,7 +185,7 @@ public class FavoriteService {
         if (recipeData.getQuantityOfPersonsSuitable() == null) {
             recipeData.setQuantityOfPersonsSuitable(1);
         } else {
-            Integer quantity = recipeData.getQuantityOfPersonsSuitable()  + 1;
+            Integer quantity = recipeData.getQuantityOfPersonsSuitable() + 1;
             recipeData.setQuantityOfPersonsSuitable(quantity);
         }
 
@@ -182,12 +195,16 @@ public class FavoriteService {
     private void decreaseTheQuantityOfSuitablePersonsByRecipe(String dish) {
         RecipeData recipeData = Optional.of(
             recipeRepository.findByDish(dish))
-            .orElseThrow(() -> new RuntimeException("Could not update the recipe decreasing the quantity of suitable persons"));
+            .orElseThrow(() -> {
+                throw new FlowException("Could not update the recipe decreasing the quantity of suitable persons",
+                    ErrorTypeEnum.DATABASE,
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+            });
 
         if (recipeData.getQuantityOfPersonsSuitable() == null) {
             recipeData.setQuantityOfPersonsSuitable(0);
         } else {
-            Integer quantity = recipeData.getQuantityOfPersonsSuitable()  - 1;
+            Integer quantity = recipeData.getQuantityOfPersonsSuitable() - 1;
             recipeData.setQuantityOfPersonsSuitable(quantity);
         }
 
