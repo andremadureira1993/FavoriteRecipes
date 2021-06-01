@@ -2,7 +2,9 @@ package com.recipe.db;
 
 import javax.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document("login")
 public class Login {
 
     @Id
