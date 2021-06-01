@@ -1,0 +1,212 @@
+[
+    {
+        "name": "Java",
+        "firstExperience": "10/2014",
+        "level": "Professional",
+        "stack": "Backend"
+    },
+    {
+        "name": "JavaScript",
+        "firstExperience": "05/2017",
+        "level": "Professional",
+        "stack": "Backend"
+    },
+    {
+        "name": "TypeScript",
+        "firstExperience": "05/2017",
+        "level": "Professional",
+        "stack": "Backend"
+    },
+    {
+        "name": "NodeJS",
+        "firstExperience": "05/2017",
+        "level": "Professional",
+        "stack": "Backend"
+    },
+    {
+        "name": "ShellScript",
+        "firstExperience": "12/2012",
+        "level": "Professional",
+        "stack": "Backend"
+    },
+    {
+        "name": "VBA",
+        "firstExperience": "02/2013",
+        "level": "Professional",
+        "stack": "Backend"
+    },
+    {
+        "name": "NSIS",
+        "firstExperience": "02/2019",
+        "level": "Intermediate",
+        "stack": "Backend"
+    },
+    {
+        "name": "ReactJS",
+        "firstExperience": "05/2017",
+        "level": "Professional",
+        "stack": "Frontend"
+    },
+    {
+        "name": "CSS",
+        "firstExperience": "12/2011",
+        "level": "Professional",
+        "stack": "Frontend"
+    },
+    {
+        "name": "HTML",
+        "firstExperience": "11/2011",
+        "level": "Professional",
+        "stack": "Frontend"
+    },
+    {
+        "name": "PLSQL",
+        "firstExperience": "12/2013",
+        "level": "Basic",
+        "stack": "Database"
+    },
+    {
+        "name": "SQL",
+        "firstExperience": "12/2012",
+        "level": "Professional",
+        "stack": "Database"
+    },
+    {
+        "name": "OpenAPI",
+        "firstExperience": "06/2020",
+        "level": "Professional",
+        "stack": "Documentation"
+    },
+    {
+        "name": "ReactNative",
+        "firstExperience": "01/2019",
+        "level": "Basic",
+        "stack": "Mobile"
+    },
+    {
+        "name": "Swagger",
+        "firstExperience": "01/2018",
+        "level": "Professional",
+        "stack": "Documentation"
+    },
+    {
+        "name": "JSON",
+        "firstExperience": "12/2012",
+        "level": "Professional",
+        "stack": "Documentation"
+    },
+    {
+        "name": "XML",
+        "firstExperience": "12/2012",
+        "level": "Professional",
+        "stack": "Documentation"
+    },
+    {
+        "name": "Docker",
+        "firstExperience": "05/2017",
+        "level": "Professional",
+        "stack": "DevOps"
+    },
+    {
+        "name": "Kubernates",
+        "firstExperience": "12/2018",
+        "level": "Intermediate",
+        "stack": "DevOps"
+    },
+    {
+        "name": "Gitlab",
+        "firstExperience": "01/2014",
+        "level": "Professional",
+        "stack": "Repository"
+    },
+    {
+        "name": "Azure",
+        "firstExperience": "01/2019",
+        "level": "Intermediate",
+        "stack": "Repository"
+    },
+    {
+        "name": "Cryptograph",
+        "firstExperience": "03/2020",
+        "level": "Intermediate",
+        "stack": "Backend"
+    },
+    {
+        "name": "Microservices",
+        "firstExperience": "12/2018",
+        "level": "Professional",
+        "stack": "Backend"
+    },
+    {
+        "name": "CI/CD",
+        "firstExperience": "12/2018",
+        "level": "Professional",
+        "stack": "Backend"
+    },
+    {
+        "name": "Linux",
+        "firstExperience": "12/2012",
+        "level": "Professional",
+        "stack": "OS"
+    },
+    {
+        "name": "Jenkins",
+        "firstExperience": "03/2020",
+        "level": "Intermediate",
+        "stack": "DevOps"
+    },
+    {
+        "name": "ITIL",
+        "firstExperience": "05/2017",
+        "level": "Basic",
+        "stack": "Documentation"
+    },
+    {
+        "name": "RabbitMQ",
+        "firstExperience": "03/2020",
+        "level": "Professional",
+        "stack": "DevOps"
+    },
+    {
+        "name": "Rest API",
+        "firstExperience": "12/2018",
+        "level": "Professional",
+        "stack": "API"
+    },
+    {
+        "name": "SOAP",
+        "firstExperience": "12/2018",
+        "level": "Professional",
+        "stack": "API"
+    },
+    {
+        "name": "Leadership",
+        "firstExperience": "12/2013",
+        "level": "Professional",
+        "stack": "SoftSkills"
+    },
+    {
+        "name": "Communication",
+        "firstExperience": "",
+        "level": "Professional",
+        "stack": "SoftSkills"
+    },
+    {
+        "name": "Team Work",
+        "firstExperience": "",
+        "level": "Professional",
+        "stack": "SoftSkills"
+    },
+    {
+        "name": "Reliable",
+        "firstExperience": "",
+        "level": "Professional",
+        "stack": "SoftSkills"
+    },
+    {
+        "name": "Resilient",
+        "firstExperience": "",
+        "level": "Professional",
+        "stack": "SoftSkills"
+    }
+]
