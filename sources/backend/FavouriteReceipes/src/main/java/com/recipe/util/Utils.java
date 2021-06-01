@@ -2,6 +2,7 @@ package com.recipe.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,8 @@ public class Utils {
     public String encodePassword(String password) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        return passwordEncoder.encode(password);
+//        return passwordEncoder.encode(password);
+        return password;
     }
 
     public Date parseFromStringToDate(String dateValue) {

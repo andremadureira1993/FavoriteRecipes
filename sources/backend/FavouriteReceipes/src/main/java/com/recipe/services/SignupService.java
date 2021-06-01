@@ -63,6 +63,7 @@ public class SignupService {
 
         login.setUsername(signUpRequest.getUsername());
         String encodedPassword = utils.encodePassword(signUpRequest.getPassword());
+//        String encodedPassword = signUpRequest.getPassword();
         login.setPassword(encodedPassword);
         loginRepository.save(login);
         LOGGER.info("Successfully created user " + signUpRequest.getUsername() + " in database");

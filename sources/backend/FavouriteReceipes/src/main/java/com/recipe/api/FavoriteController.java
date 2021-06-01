@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.recipe.openapi.FavoritesApi;
 import com.recipe.openapi.FavoritesResponse;
@@ -14,6 +15,7 @@ import com.recipe.services.FavoriteService;
 import io.swagger.models.Response;
 
 @Controller
+@CrossOrigin
 public class FavoriteController implements FavoritesApi {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FavoriteController.class);
