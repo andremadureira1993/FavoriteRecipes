@@ -10,16 +10,30 @@ servers:
     description: Localhost environment.
 
 paths:
-  /signin:
-    get:
+  /login:
+    post:
       tags:
         - Login
-      summary: Login into the application
+      summary: Performs the login returning an access and a refresh token.
+      operationId: Login
+      requestBody:
+        description: The LoginRequest object.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
       responses:
-        '200':
-          description: OK
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
+        200:
+          description: The LoginResponse object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        400:
+          description: Bad request. Check the message for more details.
+        404:
+          description: Not found. Check the message for more details.
   /signup:
     post:
       tags:
@@ -160,6 +174,34 @@ paths:
           description: OK
 components:
   schemas:
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          description: The username.
+          maxLength: 128
+        password:
+          type: string
+          format: password
+          description: The user password.
+          minLength: 6
+          maxLength: 24
+    LoginResponse:
+      type: object
+      required:
+        - accessToken
+        - refreshToken
+      properties:
+        accessToken:
+          type: string
+          description: The user access token to use on subsequent requests.
+        refreshToken:
+          type: string
+          description: The user refresh token to use to refresh the access token.
     UserFavoritesResponse:
       type: object
       description: All favorites for the current user

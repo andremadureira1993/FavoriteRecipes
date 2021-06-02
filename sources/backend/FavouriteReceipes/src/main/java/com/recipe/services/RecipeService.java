@@ -19,6 +19,9 @@ import com.recipe.openapi.Recipe;
 import com.recipe.openapi.RecipeResponse;
 import com.recipe.util.Utils;
 
+/**
+ * Process the CRUDs against recipes services
+ */
 @Service
 public class RecipeService {
 
@@ -36,7 +39,11 @@ public class RecipeService {
      * @param request
      */
     public void addRecipe(Recipe request) {
-        if (StringUtils.isBlank(request.getDish())) return;
+        if (StringUtils.isBlank(request.getDish())) {
+            throw new FlowException("Recipe dish name is null",
+                ErrorTypeEnum.INVALID_REQUEST,
+                HttpStatus.BAD_REQUEST);
+        }
 
         if (checkIfHasARecipeWithSameName(request.getDish())) {
             throw new FlowException("Has already a recipe with same name in database",
@@ -55,7 +62,11 @@ public class RecipeService {
      * @param request
      */
     public void updateRecipe(Recipe request) {
-        if (StringUtils.isBlank(request.getDish())) return;
+        if (StringUtils.isBlank(request.getDish())) {
+            throw new FlowException("Recipe dish name is null",
+                ErrorTypeEnum.INVALID_REQUEST,
+                HttpStatus.BAD_REQUEST);
+        }
 
         RecipeData recipeDataFounded = repository.findByDish(request.getDish());
 
@@ -176,6 +187,12 @@ public class RecipeService {
      * @param recipeId
      */
     public void removeRecipe(String recipeId) {
+        if (StringUtils.isBlank(recipeId)) {
+            throw new FlowException("Recipe id null",
+                ErrorTypeEnum.INVALID_REQUEST,
+                HttpStatus.BAD_REQUEST);
+        }
+
         RecipeData recipeData = Optional.of(
             repository.findById(recipeId))
             .orElseThrow(() -> new FlowException("Not found",
