@@ -21,7 +21,7 @@ It's expected that user can create a account and used it.
 
 ### How
 
-Implementation of the create a account option, authentication using Basic (Username:Password in base 64 encoded) and for the Authorization the token retrieved from spring security after authentication.
+Implementation of the create a account option, authentication using username and password, and for the Authorization will use a JWT token from spring security
 
 
 ## Restful patterns
@@ -43,6 +43,7 @@ Its expected for the user to have the information in the website ASAP and there 
 ### How
 
 Implementation of mongodb as backend, plus the database should be constructed in the top of a docker-compose to allow costumer to run locally.
+Deploy in MongoDB Atlas, with the location of Netherlands
 
 ## CI/CD
 
@@ -52,4 +53,5 @@ Since we're developing a ready production application we need to make sure that 
 
 ### How
 
-Deploy via netlify that's a opensource website.
+-Frontend: Deploy via netlify that's a opensource website.
+-Backend: Deploy via Heroku
