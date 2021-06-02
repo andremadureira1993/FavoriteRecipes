@@ -11,11 +11,18 @@
     </parent>
 
     <groupId>com.receipe</groupId>
-    <artifactId>FavouriteReceipes</artifactId>
+    <artifactId>FavoriteRecipes</artifactId>
     <version>1.0.0</version>
 
     <properties>
         <java.version>11</java.version>
+
+        <java.version>11</java.version>
+        <start-class>com.recipe.Application</start-class>
+        <jacoco.unit-tests.limit.instruction-ratio>100%</jacoco.unit-tests.limit.instruction-ratio>
+        <jacoco.unit-tests.limit.branch-ratio>100%</jacoco.unit-tests.limit.branch-ratio>
+        <jacoco.aggregate.limit.instruction-ratio>100%</jacoco.aggregate.limit.instruction-ratio>
+        <jacoco.aggregate.limit.branch-ratio>100%</jacoco.aggregate.limit.branch-ratio>
 
         <javax-xml.version>2.2.11</javax-xml.version>
         <jackson-datatype.version>2.11.0</jackson-datatype.version>
@@ -118,7 +125,12 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-jackson</artifactId>
             <version>0.10.7</version>
-            <scope>compile</scope> <!-- Not runtime -->
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ulisesbocchio</groupId>
+            <artifactId>jasypt-spring-boot-starter</artifactId>
+            <version>3.0.3</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -134,6 +146,17 @@
         </dependency>
 
         <!-- Testes Dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
@@ -164,15 +187,15 @@
             <artifactId>junit-jupiter-params</artifactId>
             <version>5.7.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.6</version>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.5.0</version>
-            </plugin>
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
@@ -214,12 +237,57 @@
                         <param>com.recipe.db.Favorite</param>
                         <param>com.recipe.db.Login</param>
                         <param>com.recipe.db.RecipeData</param>
+                        <param>com.recipe.exceptions.FlowException</param>
                     </classes>
                     <generateAssertions>true</generateAssertions>
                     <generateBddAssertions>false</generateBddAssertions>
                     <generateSoftAssertions>false</generateSoftAssertions>
                     <generateJUnitSoftAssertions>false</generateJUnitSoftAssertions>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.5</version>
+                <configuration>
+                    <excludes>
+                        <!-- database -->
+                        <exclude>**/db/*.class</exclude>
+                        <exclude>**/configurations/*.class</exclude>
+                        <exclude>**/configurations/*.class</exclude>
+                        <!-- Auto generated openapi code -->
+                        <exclude>**/openapi/*</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.5.0</version>
+                <configuration>
+                    <mainClass>com.recipe.Application</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

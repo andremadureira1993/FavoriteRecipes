@@ -18,11 +18,11 @@ public class LoginController implements LoginApi {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
-    private LoginService authService;
+    private LoginService loginService;
 
     @Override
     public ResponseEntity<LoginResponse> login(@Valid LoginRequest loginRequest) {
         LOGGER.info("Processing login for user: " + loginRequest.getUsername());
-        return ResponseEntity.ok(authService.authenticate(loginRequest));
+        return ResponseEntity.ok(loginService.authenticate(loginRequest));
     }
 }

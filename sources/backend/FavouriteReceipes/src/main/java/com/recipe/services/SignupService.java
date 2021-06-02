@@ -4,10 +4,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.recipe.db.Login;
 import com.recipe.db.LoginRepository;
+import com.recipe.exceptions.FlowException;
+import com.recipe.openapi.ErrorTypeEnum;
 import com.recipe.util.Utils;
 import com.recipe.openapi.SignUpRequest;
 
@@ -30,10 +33,16 @@ public class SignupService {
      * @param signUpRequest
      */
     public void addUser(SignUpRequest signUpRequest) {
-        if (StringUtils.isBlank(signUpRequest.getUsername()) || StringUtils.isBlank(signUpRequest.getPassword())) return;
+        if (StringUtils.isBlank(signUpRequest.getUsername()) || StringUtils.isBlank(signUpRequest.getPassword())) {
+            throw new FlowException("Invalid credentials to signup",
+                ErrorTypeEnum.INVALID_REQUEST,
+                HttpStatus.BAD_REQUEST);
+        };
 
         if (isUsernameAlreadyInUse(signUpRequest.getUsername())) {
-            throw new RuntimeException("Could not create the username it's already registered");
+            throw new FlowException("Could not create the username it's already registered",
+                ErrorTypeEnum.INVALID_REQUEST,
+                HttpStatus.BAD_REQUEST);
         } else {
             createUserInDatabase(signUpRequest);
         }

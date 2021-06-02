@@ -6,6 +6,9 @@ import javax.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Represents the collection recipeData in MongoDB
+ */
 @Document("recipeData")
 public class RecipeData {
 
