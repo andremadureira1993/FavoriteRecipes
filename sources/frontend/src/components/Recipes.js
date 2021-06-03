@@ -11,7 +11,6 @@ function Recipes() {
   const [refreshed, setRefreshed] = useState(false);
   const [recipes, setRecipes] = useState([{}]);
   const [favorites, setFavorites] = useState([{}]);
-  const [isFavorite, setIsFavorite] = useState(true);
   const history = useHistory();
 
   async function getRecipesFromServer() {
@@ -68,7 +67,7 @@ function Recipes() {
       let auxMaxValue = value + 1;
       let auxMinValue = value - 1;
       if (value > 0 && auxMaxValue <= value) {
-        value = auxMaxValue;
+        setValue(auxMaxValue);
       } else if (value > 0 && auxMinValue <= value && auxMinValue > 0) {
         setValue(auxMaxValue);
       } else {
@@ -180,7 +179,6 @@ function Recipes() {
                     key={item.id}
                     onClick={() => {
                       setValue(id);
-                      setIsFavorite(false);
                     }}
                     className={`job-btn ${id === value && "active-btn"}`}
                   >
@@ -210,7 +208,7 @@ function Recipes() {
                       </button>
                     </div>
                   );
-                }
+                } return <div />
               })}
               <h5>{isVegetarian ? <p>Vegan</p> : <p>Not Vegan</p>}</h5>
               <h5>Creation date {dateAndTimeOfCreation}</h5>

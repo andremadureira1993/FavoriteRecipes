@@ -4,29 +4,6 @@ import { useHistory } from "react-router-dom";
 import Navbar from "./Navbar";
 import RecipeImage from "../assets/images/recipe3.jpg";
 
-async function loginUser(credentials) {
-  const { username, password } = credentials;
-  const authentication = JSON.stringify({
-    username: username,
-    password: password,
-  });
-
-  return fetch("https://favorite-recipe-server.herokuapp.com/signup", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: authentication,
-  }).then((data) => {
-    const token = data.headers["Authorization"];
-
-    console.log("Data: " + data.json);
-    console.log("Token: " + token);
-    console.log("header: " + JSON.stringify(data.headers));
-    console.log("Body: " + JSON.stringify(data.body));
-  });
-}
-
 export default function Signup({ setToken }) {
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
