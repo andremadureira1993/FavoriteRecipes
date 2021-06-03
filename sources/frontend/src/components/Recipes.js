@@ -42,6 +42,88 @@ function Recipes() {
         setFavorites(data);
       });
   }
+  async function getFavoriteRecipes() {
+    return fetch("https://favorite-recipe-server.herokuapp.com/favorites", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setFavorites(data);
+      });
+  }
+
+  const handleGetRecipes = async (e) => {
+    e.preventDefault();
+    await getRecipesFromServer();
+    await getFavoriteRecipes();
+    setRefreshed(true);
+  };
+
+  const handleCreateRecipes = async (e) => {
+    e.preventDefault();
+    history.push("/createrecipe");
+  };
+
+  const removeRecipe = async (e) => {
+    e.preventDefault();
+    fetch("https://favorite-recipe-server.herokuapp.com/recipes/" + id, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    }).then((response) => {
+      window.location.reload();
+      handleGetRecipes(e);
+    });
+
+  };
+
+  const addFavorite = async (e) => {
+    e.preventDefault();
+    await fetch(
+      "https://favorite-recipe-server.herokuapp.com/favorites/" + id,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("jwt"),
+        },
+      }
+    );
+    handleGetRecipes(e);
+  };
+
+  const removeFavorite = async (e) => {
+    e.preventDefault();
+    await fetch(
+      "https://favorite-recipe-server.herokuapp.com/favorites/" + id,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("jwt"),
+        },
+      }
+    ).then(() => {
+      history.push("/recipes");
+    });
+
+  };
+
+  let {
+    id,
+    ingredients,
+    dish,
+    cookingInstructions,
+    dateAndTimeOfCreation,
+    isVegetarian,
+    totalPersonSuitable,
+  } = recipes[value];
 
   const handleGetRecipes = async (e) => {
     e.preventDefault();
@@ -208,7 +290,8 @@ function Recipes() {
                       </button>
                     </div>
                   );
-                } return <div />
+                }
+                return <div />;
               })}
               <h5>{isVegetarian ? <p>Vegan</p> : <p>Not Vegan</p>}</h5>
               <h5>Creation date {dateAndTimeOfCreation}</h5>
@@ -227,8 +310,12 @@ function Recipes() {
               })}
               <p className="job-date">Cooking Instruction</p>
               <p className="job-date">{cookingInstructions}</p>
-              <button type="button" className="btn" onClick={removeRecipe}>
-                Remove Recipe <BsFillTrashFill color='red'/>
+              <button
+                type="button"
+                className="btn-login1"
+                onClick={removeRecipe}
+              >
+                Remove Recipe <BsFillTrashFill color="red" />
               </button>
             </article>
           </div>

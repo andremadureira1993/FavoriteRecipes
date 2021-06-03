@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import Navbar from "./Navbar";
-import { FiLogIn } from "react-icons/fi";
+import { FaSave } from "react-icons/fa";
 import RecipeImage from "../assets/images/recipe5.jpg";
 
 function CreateRecipes() {
@@ -54,7 +54,7 @@ function CreateRecipes() {
           </label>
           <label>
             <p>Ingredients</p>
-            <input
+            <textarea
               type="text"
               name="Ingredients"
               onChange={(e) => setIngredients(e.target.value)}
@@ -64,7 +64,7 @@ function CreateRecipes() {
           </label>
           <label>
             <p>Cooking details</p>
-            <input
+            <textarea
               type="text"
               name="Cooking details"
               onChange={(e) => setCooking(e.target.value)}
@@ -74,7 +74,7 @@ function CreateRecipes() {
           <label>
             <p>Vegetarian/Vegan?</p>
             <input
-              type="text"
+              type="textarea"
               name="vegetarian"
               onChange={(e) => setIsVegetarian(e.target.value)}
               placeholder="yes/no"
@@ -82,7 +82,7 @@ function CreateRecipes() {
             />
           </label>
           <button type="submit" className="btn-login1">
-            Login <FiLogIn />
+            Save <FaSave />
           </button>
         </form>
         <br />
