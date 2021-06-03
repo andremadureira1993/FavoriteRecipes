@@ -33,7 +33,12 @@ public class Utils {
     public String extractUsernameFromJwt() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        return principal.toString();
+
+        if (principal instanceof UserDetails) {
+            return ((UserDetails)principal).getUsername();
+        } else {
+            return principal.toString();
+        }
     }
 
     public RecipeResponse mapRecipeDataToRecipeResponse(RecipeData recipeData) {

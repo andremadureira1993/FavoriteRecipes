@@ -42,6 +42,19 @@ function Recipes() {
         setFavorites(data);
       });
   }
+  async function getFavoriteRecipes() {
+    return fetch("https://favorite-recipe-server.herokuapp.com/favorites", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setFavorites(data);
+      });
+  }
 
   const handleGetRecipes = async (e) => {
     e.preventDefault();
@@ -64,6 +77,84 @@ function Recipes() {
         Authorization: "Bearer " + localStorage.getItem("jwt"),
       },
     }).then((response) => {
+      window.location.reload();
+      handleGetRecipes(e);
+    });
+
+  };
+
+  const addFavorite = async (e) => {
+    e.preventDefault();
+    await fetch(
+      "https://favorite-recipe-server.herokuapp.com/favorites/" + id,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("jwt"),
+        },
+      }
+    );
+    handleGetRecipes(e);
+  };
+
+  const removeFavorite = async (e) => {
+    e.preventDefault();
+    await fetch(
+      "https://favorite-recipe-server.herokuapp.com/favorites/" + id,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("jwt"),
+        },
+      }
+    ).then(() => {
+      history.push("/recipes");
+    });
+
+  };
+
+  let {
+    id,
+    ingredients,
+    dish,
+    cookingInstructions,
+    dateAndTimeOfCreation,
+    isVegetarian,
+    totalPersonSuitable,
+  } = recipes[value];
+
+  const handleGetRecipes = async (e) => {
+    e.preventDefault();
+    await getRecipesFromServer();
+    await getFavoriteRecipes();
+    setRefreshed(true);
+  };
+
+  const handleCreateRecipes = async (e) => {
+    e.preventDefault();
+    history.push("/createrecipe");
+  };
+
+  const removeRecipe = async (e) => {
+    e.preventDefault();
+    fetch("https://favorite-recipe-server.herokuapp.com/recipes/" + id, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    }).then((response) => {
+      let auxMaxValue = value + 1;
+      let auxMinValue = value - 1;
+      if (value > 0 && auxMaxValue <= value) {
+        setValue(auxMaxValue);
+      } else if (value > 0 && auxMinValue <= value && auxMinValue > 0) {
+        setValue(auxMaxValue);
+      } else {
+        setValue(0);
+      }
       window.location.reload();
       handleGetRecipes(e);
     });
@@ -226,7 +317,6 @@ function Recipes() {
               >
                 Remove Recipe <BsFillTrashFill color="red" />
               </button>
-
             </article>
           </div>
         </section>
