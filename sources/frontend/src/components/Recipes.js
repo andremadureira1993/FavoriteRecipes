@@ -1,63 +1,243 @@
-import React, { useState } from 'react'
-import { FaAngleDoubleRight } from 'react-icons/fa';
-import { BsChevronDoubleDown } from 'react-icons/bs';
-import jobs from '../data/jobs.json';
+import React, { useState } from "react";
+import { FaAngleDoubleRight } from "react-icons/fa";
+import { BsFillTrashFill } from "react-icons/bs";
+import { FiRefreshCw, FiHeart, FiXCircle } from "react-icons/fi";
+import { useHistory } from "react-router-dom";
+import Navbar from "./Navbar";
+import RecipeImage from "../assets/images/recipe2.jpg";
 
 function Recipes() {
   const [value, setValue] = useState(0);
+  const [refreshed, setRefreshed] = useState(false);
+  const [recipes, setRecipes] = useState([{}]);
+  const [favorites, setFavorites] = useState([{}]);
+  const [isFavorite, setIsFavorite] = useState(true);
+  const history = useHistory();
 
-  const nextJob = () => {
-      const next = value + 1;
-      if (next <= jobs.length -1) {
-          setValue(next);
-      } else {
-          setValue(0);
+  async function getRecipesFromServer() {
+    return fetch(
+      "https://favorite-recipe-server.herokuapp.com/recipes?isVegetarian=false",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("jwt"),
+        },
       }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setRecipes(data);
+      });
+  }
+  async function getFavoriteRecipes() {
+    return fetch("https://favorite-recipe-server.herokuapp.com/favorites", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setFavorites(data);
+      });
   }
 
-  const { company, dates, duties, title, companyDescription } = jobs[value]
+  const handleGetRecipes = async (e) => {
+    e.preventDefault();
+    await getRecipesFromServer();
+    await getFavoriteRecipes();
+    setRefreshed(true);
+  };
+
+  const handleCreateRecipes = async (e) => {
+    e.preventDefault();
+    history.push("/createrecipe");
+  };
+
+  const removeRecipe = async (e) => {
+    e.preventDefault();
+    fetch("https://favorite-recipe-server.herokuapp.com/recipes/" + id, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    }).then((response) => {
+      let auxMaxValue = value + 1;
+      let auxMinValue = value - 1;
+      if (value > 0 && auxMaxValue <= value) {
+        value = auxMaxValue;
+      } else if (value > 0 && auxMinValue <= value && auxMinValue > 0) {
+        setValue(auxMaxValue);
+      } else {
+        setValue(0);
+      }
+      window.location.reload();
+      handleGetRecipes(e);
+    });
+
+  };
+
+  const addFavorite = async (e) => {
+    e.preventDefault();
+    await fetch(
+      "https://favorite-recipe-server.herokuapp.com/favorites/" + id,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("jwt"),
+        },
+      }
+    );
+    handleGetRecipes(e);
+  };
+
+  const removeFavorite = async (e) => {
+    e.preventDefault();
+    await fetch(
+      "https://favorite-recipe-server.herokuapp.com/favorites/" + id,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("jwt"),
+        },
+      }
+    ).then(() => {
+      history.push("/recipes");
+    });
+
+  };
+
+  let {
+    id,
+    ingredients,
+    dish,
+    cookingInstructions,
+    dateAndTimeOfCreation,
+    isVegetarian,
+    totalPersonSuitable,
+  } = recipes[value];
+
   return (
-      <section className='section'>
-        <div className='title'>
-          <h2>recipes</h2>
-          <div className='underline'></div>
-        </div>
-        <div className='jobs-center'>
-          {/* btn container */}
-          <div className='btn-container'>
-            {jobs.map((item, index) => {
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setValue(index)}
-                  className={`job-btn ${index === value && 'active-btn'}`}
-                >
-                  {item.company}
-                </button>
-              )
-            })}
+    <div style={{ backgroundImage: `url(${RecipeImage})` }}>
+      <Navbar />
+      {!refreshed ? (
+        <section className="section">
+          <button
+            type="button"
+            className="btn-recipe-create"
+            onClick={handleCreateRecipes}
+          >
+            Create Recipe
+            <FiRefreshCw />
+          </button>
+          <button
+            type="button"
+            className="btn-recipe-update"
+            onClick={handleGetRecipes}
+          >
+            Refresh Recipes
+            <FiRefreshCw />
+          </button>
+          <div className="title">
+            <h2>recipes</h2>
+            <div className="underline"></div>
           </div>
-          {/* job info */}
-          <article className='job-info'>
-            <h3>{title}</h3>
-            <h4>{company}</h4>
-            <h5>{companyDescription}</h5>
-            <p className='job-date'>{dates}</p>
-            {duties.map((duty, index) => {
-              return (
-                <div key={index} className='job-desc'>
-                  <FaAngleDoubleRight className='job-icon'></FaAngleDoubleRight>
-                  <p>{duty}</p>
-                </div>
-              )
-            })}
-          </article>
-        </div>
-        <button type='button' className='btn' onClick={nextJob}>
-          <BsChevronDoubleDown />
-        </button>
-      </section>
-  )
+        </section>
+      ) : (
+        <section className="section">
+          <button
+            type="button"
+            className="btn-recipe-create"
+            onClick={handleCreateRecipes}
+          >
+            Create Recipe
+            <FiRefreshCw />
+          </button>
+          <button
+            type="button"
+            className="btn-recipe-update"
+            onClick={handleGetRecipes}
+          >
+            Refresh Recipes
+            <FiRefreshCw />
+          </button>
+          <div className="title">
+            <h2>recipes</h2>
+            <div className="underline"></div>
+          </div>
+          <div></div>
+          <div className="jobs-center">
+            {/* btn container */}
+            <div className="btn-container">
+              {recipes.map((item, id) => {
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => {
+                      setValue(id);
+                      setIsFavorite(false);
+                    }}
+                    className={`job-btn ${id === value && "active-btn"}`}
+                  >
+                    {item.dish}
+                  </button>
+                );
+              })}
+            </div>
+            <article className="job-info">
+              <h3>{dish}</h3>
+              <button
+                className={`job-btn ${id === value && "active-btn"}`}
+                onClick={addFavorite}
+              >
+                <FiHeart color="green" />
+              </button>
+              {favorites.map((favorite, index) => {
+                if (favorite.recipe.dish === dish) {
+                  return (
+                    <div key={index}>
+                      <button
+                        key={index}
+                        className={`job-btn ${id === value && "active-btn"}`}
+                        onClick={removeFavorite}
+                      >
+                        <FiXCircle color="red" /> Remove from favorites
+                      </button>
+                    </div>
+                  );
+                }
+              })}
+              <h5>{isVegetarian ? <p>Vegan</p> : <p>Not Vegan</p>}</h5>
+              <h5>Creation date {dateAndTimeOfCreation}</h5>
+              <h5>
+                total of favorites:{" "}
+                {totalPersonSuitable != null ? totalPersonSuitable : 0}
+              </h5>
+              <p className="job-date">Ingredients List</p>
+              {ingredients.map((ingredient, index) => {
+                return (
+                  <div key={index} className="job-desc">
+                    <FaAngleDoubleRight className="job-icon"></FaAngleDoubleRight>
+                    <p>{ingredient}</p>
+                  </div>
+                );
+              })}
+              <p className="job-date">Cooking Instruction</p>
+              <p className="job-date">{cookingInstructions}</p>
+              <button type="button" className="btn" onClick={removeRecipe}>
+                Remove Recipe <BsFillTrashFill color='red'/>
+              </button>
+            </article>
+          </div>
+        </section>
+      )}
+    </div>
+  );
 }
 
-export default Recipes
+export default Recipes;
