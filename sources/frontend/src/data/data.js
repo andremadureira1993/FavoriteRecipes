@@ -5,11 +5,6 @@ export const linksLogged = [
     id: 1,
     url: '/recipes',
     text: 'recipes',
-  },
-  {
-    id: 2,
-    url: '/favorites',
-    text: 'favorites',
   }
 ];
 

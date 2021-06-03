@@ -26,10 +26,8 @@ const Navbar = () => {
   const handleLogout = e => {
     e.preventDefault();
 
-    if (localStorage.getItem('jwt') !== null) {
-        localStorage.removeItem('jwt');
-    }
-    
+    localStorage.clear();
+        
     history.push('/login');
     
   }
@@ -44,7 +42,7 @@ const Navbar = () => {
         </div>
         <div className='links-container' ref={linksContainerRef}>
           <ul className='links' ref={linksRef}>
-            { localStorage.getItem('jwt') !== null? (
+            { localStorage.getItem('jwt') !== null && localStorage.getItem('jwt') !== undefined? (
               linksLogged.map((link) => {
                 const { id, url, text } = link;
                 return (
